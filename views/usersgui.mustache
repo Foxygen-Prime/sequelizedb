@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Home</title>
-  </head>
-  <body>
-    <h1>Users</h1>
+
+<head>
+  <meta charset="utf-8">
+  <title>Home</title>
+</head>
+
+<body>
+  <h1>Users</h1>
+  <div class="">
+    <a href="/userForm">Add a User Here!</a>
+  </div>
 
   {{#userskey}}
-{{name}}
-{{email}}
-{{bio}}
+    <table>
+      <tr>
+
+        <td> {{name}} </td>
+        <td> {{email}} </td>
+        <td> {{bio}} </td>
+        <td>
+          <form class="" action="/delete_user/{{id}}" method="post">
+            <input type="submit" name="" value="Delete"></form>
+        </td>
+
+      </tr>
+    </table>
   {{/userskey}}
 
-  </body>
+</body>
+
 </html>

@@ -7,7 +7,9 @@ const models = require("./models");
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 app.engine('mustache', mustacheExpress());
 
@@ -38,15 +40,40 @@ app.set('view engine', 'mustache')
 //
 // listUsers();
 
-app.get('/', function (req, res){
+app.get('/', function(req, res) {
   res.render('index')
 })
 
-app.get('/users', function (req, res){
-  models.User.find().then(function(userslist){
-    res.render('usersgui', {userskey:userslist});
+app.get('/users', function(req, res) {
+  models.User.findAll().then(function(userslist) {
+    res.render('usersgui', {
+      userskey: userslist
+    });
   })
 })
+
+app.get('/userForm', function(req, res) {
+  res.render('UserForm');
+})
+
+app.post('/create_user', function(req, res) {
+  const userToCreate = models.User.build({
+    name: req.body.formInputName,
+    email: req.body.formInputEmail,
+    bio: req.body.formInputBio
+  });
+  console.log(req.body);
+  userToCreate.save().then(function() {
+    res.redirect("/users")
+  })
+})
+
+app.post('/delete_user/:idOfTheUser', function(req, res) {
+  console.log("the ID of User is " + req.params.idOfTheUser);
+  models.User.destroy({where: {id: req.params.idOfTheUser}}).then(function() {
+ res.redirect("/users")
+  })
+  });
 
 app.listen(3000, function() {
   console.log('Successfully started express application!');
@@ -57,7 +84,7 @@ process.on('SIGINT', function() {
   const index = require('./models/index')
   index.sequelize.close()
 
- // give it a second
+  // give it a second
   setTimeout(function() {
     console.log('process exit');
     process.exit(0);
