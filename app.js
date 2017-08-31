@@ -42,6 +42,12 @@ app.get('/', function (req, res){
   res.render('index')
 })
 
+app.get('/users', function (req, res){
+  models.User.find().then(function(userslist){
+    res.render('usersgui', {userskey:userslist});
+  })
+})
+
 app.listen(3000, function() {
   console.log('Successfully started express application!');
 })
